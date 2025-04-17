@@ -41,14 +41,14 @@ export function MainNav() {
   ]
 
   return (
-    <nav className="flex items-center space-x-4 lg:space-x-6">
+    <nav className="flex items-center space-x-6">
       {routes.map((route) => (
         <Link
           key={route.href}
           href={route.href}
           className={cn(
             "text-sm font-medium transition-colors hover:text-primary",
-            route.active ? "text-black dark:text-white" : "text-muted-foreground",
+            route.active ? "text-foreground font-semibold" : "text-muted-foreground",
           )}
         >
           {route.label}
@@ -58,16 +58,16 @@ export function MainNav() {
       {user ? (
         <div className="flex items-center gap-4">
           {isAdmin && (
-            <Button asChild variant="outline">
+            <Button asChild variant="outline" size="sm" className="rounded-full">
               <Link href="/admin">Admin</Link>
             </Button>
           )}
-          <Button variant="ghost" onClick={() => signOut()}>
+          <Button variant="ghost" size="sm" onClick={() => signOut()}>
             Sign Out
           </Button>
         </div>
       ) : (
-        <Button asChild variant="outline">
+        <Button asChild variant="outline" size="sm" className="rounded-full">
           <Link href="/auth/login">Sign In</Link>
         </Button>
       )}

@@ -18,7 +18,7 @@ const mockPosts = [
     title: "The Future of Web Development",
     slug: "future-of-web-development",
     excerpt: "Exploring the latest trends and technologies shaping the future of web development.",
-    featured_image: "/placeholder.svg?height=200&width=600",
+    featured_image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop",
     published: true,
     published_at: new Date().toISOString(),
     created_at: new Date().toISOString(),
@@ -29,7 +29,7 @@ const mockPosts = [
     title: "Designing for Accessibility",
     slug: "designing-for-accessibility",
     excerpt: "Best practices for creating accessible websites and applications.",
-    featured_image: "/placeholder.svg?height=200&width=600",
+    featured_image: "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop",
     published: true,
     published_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
     created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
@@ -40,7 +40,7 @@ const mockPosts = [
     title: "SEO Strategies for 2023",
     slug: "seo-strategies-2023",
     excerpt: "Effective SEO techniques to improve your website's visibility.",
-    featured_image: "/placeholder.svg?height=200&width=600",
+    featured_image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop",
     published: true,
     published_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
     created_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
@@ -154,26 +154,35 @@ export default async function BlogPage() {
         <div className="mt-16 grid gap-12 md:grid-cols-[2fr_1fr]">
           <div>
             {posts.map((post) => (
-              <div key={post.id} className="mb-12 flex flex-col rounded-lg border p-6">
+              <div
+                key={post.id}
+                className="mb-12 flex flex-col rounded-lg border shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden"
+              >
                 {post.featured_image && (
-                  <Image
-                    src={post.featured_image || "/placeholder.svg?height=200&width=600"}
-                    alt={post.title}
-                    width={600}
-                    height={200}
-                    className="mb-4 rounded-lg object-cover"
-                  />
+                  <div className="h-64 relative">
+                    <Image
+                      src={
+                        post.featured_image ||
+                        "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop"
+                      }
+                      alt={post.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
                 )}
-                <h2 className="text-2xl font-bold">{post.title}</h2>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  By {post.profiles?.full_name || "Anonymous"} •{" "}
-                  {new Date(post.published_at || post.created_at).toLocaleDateString()}
-                </p>
-                <p className="mt-4 text-muted-foreground">{post.excerpt}</p>
-                <div className="mt-6">
-                  <Button asChild variant="outline">
-                    <Link href={`/blog/${post.slug}`}>Read More</Link>
-                  </Button>
+                <div className="p-6">
+                  <h2 className="text-2xl font-bold">{post.title}</h2>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    By {post.profiles?.full_name || "Anonymous"} •{" "}
+                    {new Date(post.published_at || post.created_at).toLocaleDateString()}
+                  </p>
+                  <p className="mt-4 text-muted-foreground">{post.excerpt}</p>
+                  <div className="mt-6">
+                    <Button asChild variant="outline">
+                      <Link href={`/blog/${post.slug}`}>Read More</Link>
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -185,25 +194,52 @@ export default async function BlogPage() {
             )}
           </div>
 
-          <div>
-            <div className="rounded-lg border p-6">
-              <h2 className="text-xl font-bold">Categories</h2>
+          <div className="space-y-8">
+            <div className="rounded-lg border p-6 shadow-sm">
+              <h2 className="text-xl font-bold mb-4">Categories</h2>
               {categories.length > 0 ? (
-                <ul className="mt-4 space-y-2">
+                <ul className="space-y-2">
                   {categories.map((category) => (
                     <li key={category.id}>
                       <Link
                         href={`/blog/category/${category.slug}`}
-                        className="text-muted-foreground hover:text-foreground"
+                        className="text-muted-foreground hover:text-foreground transition-colors flex items-center"
                       >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="mr-2"
+                        >
+                          <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
                         {category.name}
                       </Link>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="mt-4 text-muted-foreground">No categories found.</p>
+                <p className="text-muted-foreground">No categories found.</p>
               )}
+            </div>
+
+            <div className="rounded-lg border p-6 shadow-sm bg-blue-50 dark:bg-blue-900/20">
+              <h2 className="text-xl font-bold mb-4">Subscribe to Our Newsletter</h2>
+              <p className="text-sm text-muted-foreground mb-4">Stay updated with our latest articles and news.</p>
+              <div className="space-y-2">
+                <input
+                  type="email"
+                  placeholder="Your email address"
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                />
+                <Button className="w-full">Subscribe</Button>
+              </div>
             </div>
           </div>
         </div>
